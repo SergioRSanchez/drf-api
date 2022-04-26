@@ -58,6 +58,21 @@ Para saber mais a respeito
 
 *Cria pasta: mkdir "nome da pasta do projeto" -> entra na pasta: cd drf-api -> Cria o ambiente virtual dentro da pasta : python3 -m venv venv -> ativa o ambiente virtual: source venv/bin/activate -> instala o Django: pip install Django==4.0.2 -> instal o Django Rest Framework: pip install djangorestframework -> Cria o projeto Django colocando o ponto no final para criar os arquivos dentro dessa pasta e não dentro de outra pasta: django-admin startproject "nome do projeto" . -> Podemos abrir o VS Code através do comando 'code', caso esteja configurado no PATH do VSCode.*
 
-Com o VSCode aberto, devemos selecionar o interpretador Python com o comando Shift+command+P e digitar interpretador python e selecionar o ambiente virtual recomendado. Pode-se observar que ao abrir o terminal com o comando control+` irá aparecer que está utilizando o nosso ambiente virtual. Estrutura que devemos ter no momento é manage.py, pasta com o nome do nosso projeto e a pasta do ambiente virtual. É interessante colocar a pasta venv no .gitignore, assim como os arquivos .sqlite3, pycache...
+Com o VSCode aberto, devemos selecionar o **interpretador** Python com o comando **Shift+command+P** e digitar *interpretador python* e selecionar o ambiente virtual recomendado. Pode-se observar que ao abrir o terminal com o **comando control+`** irá aparecer que está utilizando o nosso ambiente virtual. Estrutura que devemos ter no momento é **manage.py, pasta com o nome do nosso projeto e a pasta do ambiente virtual**. É interessante colocar a pasta venv no .gitignore, assim como os arquivos .sqlite3, pycache...
 
-Dentro do terminal criamos um novo app com o comando django-admin startapp "nome do app" ,e será criado uma nova pasta com o nome do nosso app.
+Dentro do terminal criamos um novo app com o comando *django-admin startapp "nome do app"* ,e será criado uma nova pasta com o nome do nosso app.
+
+Vamos iniciar nosso repositório git com o comando git init. Lembrando que não temos um repositório de destino para esse git, nesse caso eu criei um novo repositório. Para enviar nosso push devemos digitar *git remote add origin url do repositório* -> entrar na branch main com o *git branch -M main* -> e dar o push para o main com o *git push -u origin main*. Pronto, nosso projeto está no GitHub.
+
+Nosso projeto é criar um **Aplicativo de Agendamento**, no qual temos o administrador do serviço e os clientes, que fazem a requisição de um horário para determinado serviço.
+# API <h2>
+Nossa API terá os seguintes comandos:
+
+- Listar agendamentos: `GET /agendamentos/`
+- Detalhar agendamento: `GET /agendamentos/<id>/`
+- Criar agendamento: `POST /agendamentos/`
+- Excluir agendamento: `DELETE /agendamentos/<id>/`
+- Editar agendamento parcialmente `PATCH /agendamentos/<id>/`
+- Listar horarios: `GET /horarios/?data=YYYY-MM-DD`
+
+Por enquanto não teremos diversos prestadores de serviço, somente um, o qual selecionamos o horário para o seu serviço. No próximo passo iremos criar nosso modelo de agendamentos.
