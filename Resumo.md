@@ -76,3 +76,17 @@ Nossa API terá os seguintes comandos:
 - Listar horarios: `GET /horarios/?data=YYYY-MM-DD`
 
 Por enquanto não teremos diversos prestadores de serviço, somente um, o qual selecionamos o horário para o seu serviço. No próximo passo iremos criar nosso modelo de agendamentos.
+
+# Modelando nosso Projeto <h2>
+Entramos em *model.py* dentro do app *agenda* e criamos a classe Agendamento, lembrando que deve herdar da classe models.Model do django.db pois vai ser um modelo que vai ser criado no nosso banco de dados. Depois preenchemos com os campos que queremos em nosso banco de dados. Lembrando que se for *CharField* deve ser definido o *max_length*.
+
+Depois de preencher nosso modelo, devemos fazer a migração e executar a migração. Para isso devemos adicionar o app **agenda** no nosso projeto **tamarcado**. Dentro da pasta *tamarcado* abrimos o arquivo *settings.py* e procuramos por *INSTALLED_APP* e adicionamos o app *'agenda'*. Depois basta rodar nossas migrações com o comando **python manage.py makemigrations**, será criado a pasta *migrate* e dentro dela o arquivo **0001_initial.py** que mostra que é nossa primeira migração. Para realmente efetuar a migração devemos rodar o comando **python manage.py migrate**. Pronto, modelo criado.
+
+Agora vamos criar nossa **view**. Para isso devemos ter um arquivo **urls.py** dentro do app *agenda*. No arquivo *urls.py* dentro da pasta **tamarcado** devemos criar um novo *path* que é **'api/'**, que vai herdar de nosso **agenda.urls**, para isso usamos o comando *include* do *django.conf.urls*. Depois inserimos as *url patterns* dentro de *urls.py* da nossa pasta *agenda*. Lá colocamos os caminhos urls que iremos seguir quando chamarmos nossas *views*.
+
+No nosso arquivo **views.py** no app *agenda* iremos criar as funções que iremos chamar. Iremos fazer uma serialização do nosso objeto, que nada mais é que gerar uma representação textual desse objeto, nesse caso em formato Json, que reflete um dicionário no Python como por exemplo:
+{
+  "horario": 12:30,
+  "nome": "Sergio"
+}
+Para isso criamos um arquivo **serializer.py** dentro do app *agenda*.
