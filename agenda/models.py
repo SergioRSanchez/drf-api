@@ -6,3 +6,4 @@ class Agendamento(models.Model):
     nome_cliente = models.CharField(max_length=250)
     email_cliente = models.EmailField()
     telefone_cliente = models.CharField(max_length=25)
+    horario_cancelado = models.BooleanField(required=False, blank=False)
