@@ -65,7 +65,7 @@ Dentro do terminal criamos um novo app com o comando *django-admin startapp "nom
 Vamos iniciar nosso repositório git com o comando git init. Lembrando que não temos um repositório de destino para esse git, nesse caso eu criei um novo repositório. Para enviar nosso push devemos digitar *git remote add origin url do repositório* -> entrar na branch main com o *git branch -M main* -> e dar o push para o main com o *git push -u origin main*. Pronto, nosso projeto está no GitHub.
 
 Nosso projeto é criar um **Aplicativo de Agendamento**, no qual temos o administrador do serviço e os clientes, que fazem a requisição de um horário para determinado serviço.
-# API <h2>
+# Regras de Negócios da nossa API <h2>
 Nossa API terá os seguintes comandos:
 
 - Listar agendamentos: `GET /agendamentos/`
@@ -90,6 +90,8 @@ No nosso arquivo **views.py** no app *agenda* iremos criar as funções que irem
   "nome": "Sergio"
 }
 Para isso criamos um arquivo **serializer.py** dentro do app *agenda*. Nele importamos a biblioteca **serializers** do **rest_framework** e criamos nossa classe AgendamentoSerializer, que será responsável por fazer a serialização dos objetos do tipo Agendamento. Nesse caso criamos uma relação 1 para 1 do nosso modelo, com os mesmo campos, pois queremos serializar (exibir) todos os atributos.
+
+**O método que será implementado agora é o Function Based View, que não é o melhor método, porém fizemos para aprendizado de como funciona as coisas e está aqui documentado para eventuais consultas.**
 
 Depois devemos ir na nossa *view* para fazer a serialização do nosso objeto. Para isso criamos um objeto serializer e passamos para ela uma instância, que no nosso caso é nosso objeto, que por sua vez é uma instância da classe Agendamento. Nesse momento o construtor do AgendamentoSerializer quando recebe o objeto ele vai tentar encontrar dentro desse objeto os campos que contêm os valores *data_horario, nome_cliente...*, por isso colocamos os mesmo nomes do nosso modelo no nosso serializer. Ou seja, esse objeto serializer vai ter um atributo **.data** que vai ser uma representação em formato dicionário do Python dos atributos do nosso objeto.
 
@@ -128,6 +130,6 @@ Agora iremos implementar a rota *DELETE*, que é a rota de **deletar** um objeto
 
 Para isso usaremos a rota do *agendamento_detail*, visto que é necessário passar um *id* para deletar. Para isso inserimos o método *DELETE* em nossa *api_view*. Mais uma vez, buscamos o nosso objeto através do *get_object_or_404*, e usamos o método *obj.delete()* que tem em toda instância de modelo no Django. Depois disso retornamos uma *Response* (importada do rest_framework.response) vazia e um **Status Code 204 No Content**.
 
-Porém, como falado anteriormente, para *Regra de Negócio* seria mais interessante *Cancelar* ao invés de *Deletar*, portanto, iremos fazer algumas alterações no nosso código para que isso seja implementado. Inserimos no nosso *models.py* o atributo **horario_cancelado** como um tipo *booleano*, que por padrão está definido como *False* e *required=False*, e no nosso método *DELETE*, quando fazemos essa requisição, altera de *False* para *True*.
+Porém, como falado anteriormente, para *Regra de Negócio* seria mais interessante *Cancelar* ao invés de *Deletar*, portanto, iremos fazer algumas alterações no nosso código para que isso seja implementado. Inserimos no nosso *models.py* o atributo **horario_cancelado** como um tipo *booleano*, que por padrão está definido como *default=False*, e no nosso método *DELETE*, quando fazemos essa requisição, altera de *False* para *True*. Depois de adicionar esse atributo ao nosso modelo, devemos fazer a **migração**, como visto anteriormente.
 
-Mais uma coisa, de acordo com nossa *Regra de Negócios*, nós **não** queremos listar os **horários cancelados**, portanto iremos colocar um filtro para não listar os cancelados.
+Mais uma coisa, de acordo com nossa *Regra de Negócios*, nós **não** queremos listar os **horários cancelados**, portanto iremos excluir o objetos que tem o objeto *horario_cancelado=True*.
